@@ -17,7 +17,7 @@ export default function SelectionShare({ article }: { article: Article }) {
     const onMouseUp = () => {
       const selected = window.getSelection();
       const text = selected?.toString().trim() ?? "";
-      if (!text || text.length < 8 || selected?.rangeCount === 0) {
+      if (!selected || !text || text.length < 8 || selected.rangeCount === 0) {
         setSelection(null);
         return;
       }
