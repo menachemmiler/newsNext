@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { CopyIcon, ShareIcon } from "@/components/icons";
 import { articlePath } from "@/lib/format";
+import { useT } from "@/lib/i18n";
 import type { Article } from "@/types/news";
 
 export default function SelectionShare({ article }: { article: Article }) {
+  const { t } = useT();
   const [selection, setSelection] = useState<{
     text: string;
     x: number;
@@ -53,14 +55,14 @@ export default function SelectionShare({ article }: { article: Article }) {
           setTimeout(() => setCopied(false), 1200);
         }}
       >
-        <CopyIcon /> {copied ? "הועתק" : "העתק קטע"}
+        <CopyIcon /> {copied ? t("copied") : t("copySnippet")}
       </button>
       <a
         href={`https://wa.me/?text=${encodeURIComponent(payload)}`}
         target="_blank"
         rel="noopener noreferrer"
       >
-        <ShareIcon /> שתף
+        <ShareIcon /> {t("share")}
       </a>
     </div>
   );

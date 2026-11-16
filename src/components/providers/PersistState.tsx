@@ -5,12 +5,14 @@ import {
   ARTICLE_CACHE_KEY,
   BOOKMARKS_KEY,
   COUNTRY_KEY,
+  LOCALE_KEY,
   THEME_KEY,
 } from "@/lib/constants";
 import { useAppSelector } from "@/lib/store/hooks";
 
 export default function PersistState() {
   const theme = useAppSelector((state) => state.ui.theme);
+  const locale = useAppSelector((state) => state.ui.locale);
   const bookmarks = useAppSelector((state) => state.ui.bookmarks);
   const articlesById = useAppSelector((state) => state.news.articlesById);
   const country = useAppSelector((state) => state.news.country);
@@ -39,6 +41,11 @@ export default function PersistState() {
     if (!hydrated) return;
     localStorage.setItem(COUNTRY_KEY, country);
   }, [country, hydrated]);
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+    if (hydrated) localStorage.setItem(LOCALE_KEY, locale);
+  }, [locale, hydrated]);
 
   return null;
 }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { SearchIcon } from "@/components/icons";
 import { articlePath } from "@/lib/format";
+import { useT } from "@/lib/i18n";
 import { filterArticles, uniqueArticles } from "@/lib/localSearch";
 import { useAppSelector } from "@/lib/store/hooks";
 
@@ -18,6 +19,7 @@ export default function SearchBox({
   className = "",
 }: SearchBoxProps) {
   const router = useRouter();
+  const { t } = useT();
   const [query, setQuery] = useState(initialQuery);
   const [open, setOpen] = useState(false);
 
@@ -64,12 +66,12 @@ export default function SearchBox({
         onBlur={() => {
           window.setTimeout(() => setOpen(false), 150);
         }}
-        placeholder="חיפוש כתבה, נושא או מקור..."
-        aria-label="חיפוש חדשות"
+        placeholder={t("searchPlaceholder")}
+        aria-label={t("searchAria")}
         aria-autocomplete="list"
       />
       <button type="submit">
-        <span className="search-submit-text">חיפוש</span>
+        <span className="search-submit-text">{t("search")}</span>
       </button>
       {open && query.trim().length > 1 && suggestions.length > 0 && (
         <div className="search-suggest" role="listbox">
@@ -85,7 +87,7 @@ export default function SearchBox({
             </Link>
           ))}
           <p className="search-suggest-hint">
-            השלמה מכתבות שכבר נטענו. חיפוש מלא ירוץ מול ה-API
+            {t("searchHint")}
           </p>
         </div>
       )}

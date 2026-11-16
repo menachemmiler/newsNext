@@ -6,16 +6,18 @@ import { Suspense } from "react";
 import { BookmarkIcon, MoonIcon, SunIcon } from "@/components/icons";
 import CategoryNav from "@/components/layout/CategoryNav";
 import SearchBox from "@/components/news/SearchBox";
-import { COUNTRIES, SITE_NAME, SITE_TAGLINE } from "@/lib/constants";
+import { COUNTRIES } from "@/lib/constants";
 import { todayLabel } from "@/lib/format";
+import { countryKey, useT } from "@/lib/i18n";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setCountry } from "@/lib/store/newsSlice";
-import { toggleTheme } from "@/lib/store/uiSlice";
+import { setLocale, toggleTheme } from "@/lib/store/uiSlice";
 
 export default function Header() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
+  const { t, dateLocale, locale } = useT();
   const theme = useAppSelector((state) => state.ui.theme);
   const country = useAppSelector((state) => state.news.country);
   const category = useAppSelector((state) => state.news.category);
@@ -24,13 +26,21 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="masthead">
-        <p className="masthead-date">{todayLabel()}</p>
+        <p className="masthead-date">{todayLabel(dateLocale)}</p>
         <Link href="/" className="wordmark">
-          <span className="wordmark-kicker">NOW</span>
-          <span className="wordmark-title">{SITE_NAME}</span>
-          <span className="wordmark-tag">{SITE_TAGLINE}</span>
+          <span className="wordmark-kicker">{t("siteKicker")}</span>
+          <span className="wordmark-title">{t("siteName")}</span>
+          <span className="wordmark-tag">{t("siteTagline")}</span>
         </Link>
         <div className="masthead-actions">
+          <button
+            type="button"
+            className="icon-btn lang-toggle"
+            aria-label={t("selectLanguage")}
+            onClick={() => dispatch(setLocale(locale === "he" ? "en" : "he"))}
+          >
+            {locale === "he" ? "EN" : "עב"}
+          </button>
           <select
             className="country-select"
             value={country}
@@ -41,23 +51,23 @@ export default function Header() {
                 router.push(`/?category=${category}&country=${nextCountry}`);
               }
             }}
-            aria-label="בחירת מדינה"
+            aria-label={t("selectCountry")}
           >
             {COUNTRIES.map((item) => (
               <option key={item.id} value={item.id}>
-                {item.label}
+                {t(countryKey(item.id))}
               </option>
             ))}
           </select>
           <button
             type="button"
             className="icon-btn"
-            aria-label={theme === "dark" ? "מעבר למצב בהיר" : "מעבר למצב כהה"}
+            aria-label={theme === "dark" ? t("themeToLight") : t("themeToDark")}
             onClick={() => dispatch(toggleTheme())}
           >
             {theme === "dark" ? <SunIcon /> : <MoonIcon />}
           </button>
-          <Link href="/saved" className="icon-btn saved-link" aria-label="כתבות שמורות">
+          <Link href="/saved" className="icon-btn saved-link" aria-label={t("savedAria")}>
             <BookmarkIcon />
             {savedCount > 0 && <span className="badge">{savedCount}</span>}
           </Link>

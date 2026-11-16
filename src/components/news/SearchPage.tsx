@@ -5,12 +5,14 @@ import { useSearchParams } from "next/navigation";
 import ArticleCard from "@/components/news/ArticleCard";
 import InfiniteSentinel from "@/components/news/InfiniteSentinel";
 import SearchBox from "@/components/news/SearchBox";
+import { useT } from "@/lib/i18n";
 import { filterArticles, uniqueArticles } from "@/lib/localSearch";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { searchNews } from "@/lib/store/newsSlice";
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
+  const { t } = useT();
   const q = searchParams.get("q") ?? "";
   const dispatch = useAppDispatch();
   const {
@@ -79,8 +81,8 @@ export default function SearchPage() {
   return (
     <div className="home-page">
       <div className="section-kicker">
-        <span>חיפוש</span>
-        <h1>{q ? `תוצאות עבור “${q}”` : "חפשו כתבה"}</h1>
+        <span>{t("searchKicker")}</span>
+        <h1>{q ? t("resultsFor", { q }) : t("searchTitle")}</h1>
       </div>
       <SearchBox initialQuery={q} className="is-open page-search" />
       {searchStatus === "loading" && displayed.length === 0 && (
@@ -92,14 +94,14 @@ export default function SearchPage() {
       )}
       {searchStatus === "failed" && displayed.length === 0 && (
         <div className="state-card">
-          <h2>החיפוש נכשל</h2>
+          <h2>{t("searchFailed")}</h2>
           <p>{error}</p>
         </div>
       )}
       {searchStatus === "succeeded" && displayed.length === 0 && (
         <div className="state-card">
-          <h2>לא נמצאו כתבות</h2>
-          <p>נסו ניסוח אחר או קטגוריה מהעמוד הראשי.</p>
+          <h2>{t("noResults")}</h2>
+          <p>{t("tryOtherQuery")}</p>
         </div>
       )}
       {displayed.length > 0 && (

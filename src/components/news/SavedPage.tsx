@@ -1,21 +1,23 @@
 "use client";
 
 import ArticleCard from "@/components/news/ArticleCard";
+import { useT } from "@/lib/i18n";
 import { useAppSelector } from "@/lib/store/hooks";
 
 export default function SavedPage() {
+  const { t } = useT();
   const bookmarks = useAppSelector((state) => state.ui.bookmarks);
 
   return (
     <div className="home-page">
       <div className="section-kicker">
-        <span>הקריאה שלי</span>
-        <h1>כתבות שמורות</h1>
+        <span>{t("myReading")}</span>
+        <h1>{t("savedTitle")}</h1>
       </div>
       {bookmarks.length === 0 ? (
         <div className="state-card">
-          <h2>עדיין אין שמורים</h2>
-          <p>לחצו על הסימנייה בכל כתבה כדי לשמור אותה לקריאה מאוחר יותר.</p>
+          <h2>{t("noSaved")}</h2>
+          <p>{t("noSavedHint")}</p>
         </div>
       ) : (
         <section className="story-grid">

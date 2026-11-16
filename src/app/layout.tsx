@@ -23,7 +23,8 @@ export const metadata: Metadata = {
     default: `${SITE_NAME} | ${SITE_TAGLINE}`,
     template: `%s | ${SITE_NAME}`,
   },
-  description: "אתר חדשות עם מצב כהה ובהיר, שיתוף כתבות, שמירה וחיפוש.",
+  description:
+    "חדשות מכל האתרים, במקום אחד — כותרות ממקורות שונים, שמירה, חיפוש ומצב כהה.",
 };
 
 export const viewport: Viewport = {
@@ -58,7 +59,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
-        <Suspense fallback={<div className="state-card">טוען...</div>}>
+        <Suspense fallback={<div className="state-card">טוען…</div>}>
           <StoreProvider>
             <AppShell>{children}</AppShell>
           </StoreProvider>

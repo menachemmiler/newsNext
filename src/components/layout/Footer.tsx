@@ -1,13 +1,17 @@
-import { SITE_NAME } from "@/lib/constants";
+"use client";
+
+import { useT } from "@/lib/i18n";
 
 export default function Footer() {
+  const { t } = useT();
+
   return (
     <footer className="site-footer">
       <div>
-        <strong>{SITE_NAME}</strong>
-        <p>אתר חדשות אישי — כותרות, שיתוף, שמירה וחיפוש.</p>
+        <strong>{t("siteName")}</strong>
+        <p>{t("footerBlurb")}</p>
       </div>
-      <p>© {new Date().getFullYear()} כל הזכויות שמורות למקורות הכתבות.</p>
+      <p>{t("copyright", { year: new Date().getFullYear() })}</p>
     </footer>
   );
 }

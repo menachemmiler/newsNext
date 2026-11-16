@@ -6,8 +6,10 @@ import {
   ARTICLE_CACHE_KEY,
   BOOKMARKS_KEY,
   COUNTRY_KEY,
+  LOCALE_KEY,
   THEME_KEY,
 } from "@/lib/constants";
+import { isUiLocale } from "@/lib/i18n";
 import { makeStore, type AppStore } from "@/lib/store";
 import { hydrateNewsCache, setCountry } from "@/lib/store/newsSlice";
 import { hydrateUi } from "@/lib/store/uiSlice";
@@ -49,17 +51,19 @@ export default function StoreProvider({
           ? "dark"
           : "light";
 
+    const storedLocale = localStorage.getItem(LOCALE_KEY);
     store.dispatch(
       hydrateUi({
         theme,
         bookmarks: readJson<Article[]>(BOOKMARKS_KEY, []),
+        locale: isUiLocale(storedLocale) ? storedLocale : "he",
       }),
     );
     store.dispatch(hydrateNewsCache(readJson(ARTICLE_CACHE_KEY, {})));
 
     const country = localStorage.getItem(COUNTRY_KEY);
     if (country) store.dispatch(setCountry(country));
-  }, []);
+  }, [store]);
 
   return <Provider store={store}>{children}</Provider>;
 }

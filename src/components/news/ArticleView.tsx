@@ -12,11 +12,11 @@ import {
   TypeIcon,
 } from "@/components/icons";
 import {
-  categoryLabel,
   cleanContent,
   formatDateTime,
   readingMinutes,
 } from "@/lib/format";
+import { catKey, useT } from "@/lib/i18n";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { cacheArticle, searchNews } from "@/lib/store/newsSlice";
 import { setFontScale } from "@/lib/store/uiSlice";
@@ -29,6 +29,7 @@ export default function ArticleView({
   titleHint?: string;
 }) {
   const dispatch = useAppDispatch();
+  const { t, dateLocale } = useT();
   const decodedId = decodeURIComponent(id);
   const articles = useAppSelector((state) => state.news.articles);
   const searchResults = useAppSelector((state) => state.news.searchResults);
@@ -75,13 +76,10 @@ export default function ArticleView({
   if (!article) {
     return (
       <div className="state-card">
-        <h2>מחפשים את הכתבה...</h2>
-        <p>
-          אם הגעתם מקישור משותף, ננסה לאתר אותה לפי הכותרת. אפשר גם לחזור
-          לעמוד הראשי.
-        </p>
+        <h2>{t("lookingArticle")}</h2>
+        <p>{t("lookingHint")}</p>
         <Link href="/" className="text-link">
-          חזרה לראשי
+          {t("backHome")}
         </Link>
       </div>
     );
@@ -94,16 +92,18 @@ export default function ArticleView({
       <div className="read-progress" style={{ width: `${progress}%` }} />
       <SelectionShare article={article} />
       <nav className="crumbs">
-        <Link href="/">ראשי</Link>
+        <Link href="/">{t("home")}</Link>
         <span>/</span>
-        <Link href={`/?category=${category}`}>{categoryLabel(category)}</Link>
+        <Link href={`/?category=${category}`}>{t(catKey(category))}</Link>
       </nav>
       <p className="story-meta">
         <span>{article.source?.name}</span>
         <span className="dot" />
-        <span>{formatDateTime(article.publishedAt)}</span>
+        <span>{formatDateTime(article.publishedAt, dateLocale)}</span>
         <span className="dot" />
-        <span>{readingMinutes(article)} דק׳ קריאה</span>
+        <span>
+          {readingMinutes(article)} {t("minRead")}
+        </span>
       </p>
       <h1>{article.title}</h1>
       {article.description && (
@@ -116,7 +116,7 @@ export default function ArticleView({
           <button
             type="button"
             className="icon-btn hide-on-mobile"
-            aria-label="הדפסה"
+            aria-label={t("print")}
             onClick={() => window.print()}
           >
             <PrinterIcon />
@@ -126,7 +126,7 @@ export default function ArticleView({
             href={article.url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="לכתבה המקורית"
+            aria-label={t("originalArticle")}
           >
             <ExternalIcon />
           </a>
@@ -138,14 +138,14 @@ export default function ArticleView({
             className="text-btn"
             onClick={() => dispatch(setFontScale(fontScale - 0.08))}
           >
-            א-
+            {t("fontSmaller")}
           </button>
           <button
             type="button"
             className="text-btn"
             onClick={() => dispatch(setFontScale(fontScale + 0.08))}
           >
-            א+
+            {t("fontLarger")}
           </button>
         </div>
       </div>
@@ -160,15 +160,15 @@ export default function ArticleView({
           <p key={paragraph}>{paragraph}</p>
         ))}
         <p className="source-note">
-          הטקסט המלא ממשיך אצל המקור.{" "}
+          {t("sourceContinues")}{" "}
           <a href={article.url} target="_blank" rel="noopener noreferrer">
-            לקריאה ב-{article.source?.name || "אתר הכתבה"}
+            {t("readOn", { source: article.source?.name || t("sourceSite") })}
           </a>
         </p>
       </div>
       {related.length > 0 && (
         <section className="related">
-          <h2>עוד בנושא</h2>
+          <h2>{t("related")}</h2>
           <div className="story-grid related-grid">
             {related.map((item) => (
               <ArticleCard key={item.id} article={item} variant="compact" />

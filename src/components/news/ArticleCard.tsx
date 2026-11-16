@@ -6,6 +6,7 @@ import BookmarkButton from "@/components/news/BookmarkButton";
 import ShareMenu from "@/components/news/ShareMenu";
 import { ClockIcon } from "@/components/icons";
 import { articlePath, readingMinutes, timeAgo } from "@/lib/format";
+import { useT } from "@/lib/i18n";
 import type { Article } from "@/types/news";
 
 type ArticleCardProps = {
@@ -17,6 +18,7 @@ export default function ArticleCard({
   article,
   variant = "standard",
 }: ArticleCardProps) {
+  const { t, dateLocale } = useT();
   const [showImage, setShowImage] = useState(Boolean(article.image));
 
   useEffect(() => {
@@ -41,13 +43,15 @@ export default function ArticleCard({
         )}
         <div className="story-body">
           <p className="story-meta">
-            <span>{article.source?.name || "מקור"}</span>
+            <span>{article.source?.name || t("source")}</span>
             <span className="dot" />
             <span>
-              <ClockIcon className="inline-icon" /> {timeAgo(article.publishedAt)}
+              <ClockIcon className="inline-icon" /> {timeAgo(article.publishedAt, dateLocale)}
             </span>
             <span className="dot meta-readtime-dot" />
-            <span className="meta-readtime">{readingMinutes(article)} דק׳ קריאה</span>
+            <span className="meta-readtime">
+              {readingMinutes(article)} {t("minRead")}
+            </span>
           </p>
           <h3>{article.title}</h3>
           {variant !== "compact" && article.description && (

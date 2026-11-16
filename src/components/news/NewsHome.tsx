@@ -5,12 +5,13 @@ import { useSearchParams } from "next/navigation";
 import BreakingTicker from "@/components/layout/BreakingTicker";
 import ArticleCard from "@/components/news/ArticleCard";
 import InfiniteSentinel from "@/components/news/InfiniteSentinel";
-import { categoryLabel } from "@/lib/format";
+import { catKey, useT } from "@/lib/i18n";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchNews, setCategory } from "@/lib/store/newsSlice";
 
 export default function NewsHome() {
   const dispatch = useAppDispatch();
+  const { t } = useT();
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category") ?? "general";
   const countryParam = searchParams.get("country");
@@ -75,8 +76,8 @@ export default function NewsHome() {
     <div className="home-page">
       <BreakingTicker />
       <div className="section-kicker">
-        <span>מהדורה דיגיטלית</span>
-        <h1>{categoryLabel(activeCategory)}</h1>
+        <span>{t("fromAllSources")}</span>
+        <h1>{t(catKey(activeCategory))}</h1>
       </div>
 
       {(status === "loading" || status === "idle") && (
@@ -88,15 +89,15 @@ export default function NewsHome() {
 
       {status === "failed" && articles.length === 0 && (
         <div className="state-card">
-          <h2>לא הצלחנו לטעון את החדשות</h2>
+          <h2>{t("loadError")}</h2>
           <p>{error}</p>
         </div>
       )}
 
       {status === "succeeded" && articles.length === 0 && (
         <div className="state-card">
-          <h2>אין כתבות בקטגוריה הזו כרגע</h2>
-          <p>נסו מדינה או נושא אחר.</p>
+          <h2>{t("emptyCategory")}</h2>
+          <p>{t("tryOther")}</p>
         </div>
       )}
 

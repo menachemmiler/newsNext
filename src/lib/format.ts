@@ -13,27 +13,27 @@ export const ensureArticleId = (article: Article): Article => ({
   id: article.id || articleIdFromUrl(article.url),
 });
 
-export const timeAgo = (iso: string): string => {
+export const timeAgo = (iso: string, locale = "he-IL"): string => {
   const then = new Date(iso).getTime();
   if (Number.isNaN(then)) return "";
   const mins = Math.max(0, Math.floor((Date.now() - then) / 60000));
-  if (mins < 1) return "עכשיו";
-  if (mins < 60) return `לפני ${mins} דק׳`;
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
+  if (mins < 1) return rtf.format(0, "second");
+  if (mins < 60) return rtf.format(-mins, "minute");
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `לפני ${hours} שע׳`;
+  if (hours < 24) return rtf.format(-hours, "hour");
   const days = Math.floor(hours / 24);
-  if (days === 1) return "אתמול";
-  if (days < 7) return `לפני ${days} ימים`;
-  return new Intl.DateTimeFormat("he-IL", {
+  if (days < 7) return rtf.format(-days, "day");
+  return new Intl.DateTimeFormat(locale, {
     day: "numeric",
     month: "short",
   }).format(new Date(iso));
 };
 
-export const formatDateTime = (iso: string): string => {
+export const formatDateTime = (iso: string, locale = "he-IL"): string => {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return "";
-  return new Intl.DateTimeFormat("he-IL", {
+  return new Intl.DateTimeFormat(locale, {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -43,8 +43,8 @@ export const formatDateTime = (iso: string): string => {
   }).format(date);
 };
 
-export const todayLabel = (): string =>
-  new Intl.DateTimeFormat("he-IL", {
+export const todayLabel = (locale = "he-IL"): string =>
+  new Intl.DateTimeFormat(locale, {
     weekday: "long",
     day: "numeric",
     month: "long",

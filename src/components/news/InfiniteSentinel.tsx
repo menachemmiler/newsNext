@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useT } from "@/lib/i18n";
 
 type InfiniteSentinelProps = {
   onLoadMore: () => void;
@@ -23,6 +24,7 @@ export default function InfiniteSentinel({
   loading,
   error,
 }: InfiniteSentinelProps) {
+  const { t } = useT();
   const onLoadMoreRef = useRef(onLoadMore);
   onLoadMoreRef.current = onLoadMore;
 
@@ -47,17 +49,17 @@ export default function InfiniteSentinel({
   }, [hasMore, loading, error]);
 
   if (!hasMore && !loading && !error) {
-    return <p className="load-sentinel is-end">הגעתם לסוף העדכון</p>;
+    return <p className="load-sentinel is-end">{t("endOfFeed")}</p>;
   }
 
   return (
     <div className="load-sentinel" aria-live="polite">
       {error ? (
         <button type="button" className="text-btn" onClick={onLoadMore}>
-          {error} — נסו שוב
+          {t("retry", { error })}
         </button>
       ) : (
-        <p>{loading ? "טוען עוד כתבות..." : "גללו למטה לעוד כתבות"}</p>
+        <p>{loading ? t("loadingMore") : t("scrollMore")}</p>
       )}
     </div>
   );

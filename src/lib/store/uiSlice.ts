@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { UiLocale } from "@/lib/i18n";
 import type { Article, ThemeMode } from "@/types/news";
 
 interface UiState {
   theme: ThemeMode;
+  locale: UiLocale;
   bookmarks: Article[];
   fontScale: number;
   hydrated: boolean;
@@ -10,6 +12,7 @@ interface UiState {
 
 const initialState: UiState = {
   theme: "light",
+  locale: "he",
   bookmarks: [],
   fontScale: 1,
   hydrated: false,
@@ -21,6 +24,9 @@ const uiSlice = createSlice({
   reducers: {
     setTheme(state, action: PayloadAction<ThemeMode>) {
       state.theme = action.payload;
+    },
+    setLocale(state, action: PayloadAction<UiLocale>) {
+      state.locale = action.payload;
     },
     toggleTheme(state) {
       state.theme = state.theme === "dark" ? "light" : "dark";
@@ -36,10 +42,15 @@ const uiSlice = createSlice({
     },
     hydrateUi(
       state,
-      action: PayloadAction<{ theme: ThemeMode; bookmarks: Article[] }>,
+      action: PayloadAction<{
+        theme: ThemeMode;
+        bookmarks: Article[];
+        locale: UiLocale;
+      }>,
     ) {
       state.theme = action.payload.theme;
       state.bookmarks = action.payload.bookmarks;
+      state.locale = action.payload.locale;
       state.hydrated = true;
     },
   },
@@ -47,6 +58,7 @@ const uiSlice = createSlice({
 
 export const {
   setTheme,
+  setLocale,
   toggleTheme,
   toggleBookmark,
   setFontScale,

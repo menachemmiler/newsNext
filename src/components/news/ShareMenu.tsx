@@ -9,6 +9,7 @@ import {
   ShareIcon,
 } from "@/components/icons";
 import { articlePath } from "@/lib/format";
+import { useT } from "@/lib/i18n";
 import type { Article } from "@/types/news";
 
 type ShareMenuProps = {
@@ -38,6 +39,7 @@ const panelPosition = (rect: DOMRect): CSSProperties => {
 };
 
 export default function ShareMenu({ article, excerpt }: ShareMenuProps) {
+  const { t } = useT();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState<"link" | "text" | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -106,19 +108,19 @@ export default function ShareMenu({ article, excerpt }: ShareMenuProps) {
       role="menu"
       style={panelStyle}
     >
-      <p className="share-title">שיתוף הכתבה</p>
+      <p className="share-title">{t("shareMenuTitle")}</p>
       {typeof navigator !== "undefined" && "share" in navigator && (
         <button type="button" onClick={nativeShare}>
-          <ShareIcon /> שיתוף מהיר
+          <ShareIcon /> {t("nativeShare")}
         </button>
       )}
       <button type="button" onClick={() => copy(url, "link")}>
         {copied === "link" ? <CheckIcon /> : <CopyIcon />}
-        {copied === "link" ? "הקישור הועתק" : "העתקת קישור"}
+        {copied === "link" ? t("copiedLink") : t("copyLink")}
       </button>
       <button type="button" onClick={() => copy(text, "text")}>
         {copied === "text" ? <CheckIcon /> : <CopyIcon />}
-        {copied === "text" ? "הטקסט הועתק" : "העתקת כותרת וקישור"}
+        {copied === "text" ? t("copiedText") : t("copyText")}
       </button>
       <a
         href={`https://wa.me/?text=${encodeURIComponent(text)}`}
@@ -148,7 +150,7 @@ export default function ShareMenu({ article, excerpt }: ShareMenuProps) {
         href={`mailto:?subject=${encodeURIComponent(article.title)}&body=${encodeURIComponent(text)}`}
         onClick={(event) => event.stopPropagation()}
       >
-        <MailIcon /> אימייל
+        <MailIcon /> {t("email")}
       </a>
     </div>
   ) : null;
@@ -159,7 +161,7 @@ export default function ShareMenu({ article, excerpt }: ShareMenuProps) {
         ref={buttonRef}
         type="button"
         className="icon-btn"
-        aria-label="שיתוף כתבה"
+        aria-label={t("shareArticle")}
         aria-expanded={open}
         onClick={(event) => {
           event.preventDefault();

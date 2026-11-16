@@ -22,9 +22,11 @@ export const THEME_KEY = "now-theme";
 export const BOOKMARKS_KEY = "now-bookmarks";
 export const ARTICLE_CACHE_KEY = "now-article-cache";
 export const COUNTRY_KEY = "now-country";
+export const LOCALE_KEY = "now-locale";
 
 export const SITE_NAME = "עכשיו";
-export const SITE_TAGLINE = "חדשות מהשטח, בזמן אמת";
+export const SITE_KICKER = "מכל מקום";
+export const SITE_TAGLINE = "חדשות מכל האתרים, במקום אחד";
 
 export const getSiteUrl = (): string => {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");

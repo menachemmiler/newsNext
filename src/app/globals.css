@@ -178,6 +178,15 @@ select {
   max-width: 100%;
 }
 
+.lang-toggle {
+  width: auto;
+  min-width: var(--tap);
+  padding: 0 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
 .icon-btn {
   width: var(--tap);
   height: var(--tap);
@@ -830,7 +839,11 @@ select {
     flex: 0 0 auto;
   }
 
-  .wordmark-kicker,
+  .wordmark-kicker {
+    letter-spacing: 0.18em;
+    font-size: 0.58rem;
+  }
+
   .wordmark-tag {
     display: none;
   }
