@@ -46,8 +46,8 @@ export default function ArticleCard({
             <span>
               <ClockIcon className="inline-icon" /> {timeAgo(article.publishedAt)}
             </span>
-            <span className="dot" />
-            <span>{readingMinutes(article)} דק׳ קריאה</span>
+            <span className="dot meta-readtime-dot" />
+            <span className="meta-readtime">{readingMinutes(article)} דק׳ קריאה</span>
           </p>
           <h3>{article.title}</h3>
           {variant !== "compact" && article.description && (

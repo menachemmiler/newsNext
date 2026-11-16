@@ -68,7 +68,9 @@ export default function SearchBox({
         aria-label="חיפוש חדשות"
         aria-autocomplete="list"
       />
-      <button type="submit">חיפוש</button>
+      <button type="submit">
+        <span className="search-submit-text">חיפוש</span>
+      </button>
       {open && query.trim().length > 1 && suggestions.length > 0 && (
         <div className="search-suggest" role="listbox">
           {suggestions.map((article) => (

@@ -67,8 +67,8 @@ export default function NewsHome() {
   ]);
 
   const hero = articles[0];
-  const featured = articles.slice(1, 3);
-  const rest = articles.slice(3);
+  const featured = articles[1];
+  const rest = articles.slice(2);
   const showFeed = Boolean(hero) && status !== "loading" && status !== "failed";
 
   return (
@@ -82,7 +82,6 @@ export default function NewsHome() {
       {(status === "loading" || status === "idle") && (
         <div className="skeleton-home" aria-hidden="true">
           <div className="skeleton hero-skel" />
-          <div className="skeleton" />
           <div className="skeleton" />
         </div>
       )}
@@ -105,15 +104,9 @@ export default function NewsHome() {
         <>
           <section className="lead-grid">
             <ArticleCard article={hero} variant="hero" />
-            <div className="featured-stack">
-              {featured.map((article) => (
-                <ArticleCard
-                  key={article.id}
-                  article={article}
-                  variant="featured"
-                />
-              ))}
-            </div>
+            {featured && (
+              <ArticleCard article={featured} variant="featured" />
+            )}
           </section>
           <section className="story-grid">
             {rest.map((article) => (

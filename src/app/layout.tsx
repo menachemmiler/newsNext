@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Frank_Ruhl_Libre, Heebo } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
@@ -24,6 +24,16 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: "אתר חדשות עם מצב כהה ובהיר, שיתוף כתבות, שמירה וחיפוש.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f3eee4" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0d11" },
+  ],
 };
 
 const themeScript = `

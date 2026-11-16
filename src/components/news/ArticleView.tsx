@@ -115,7 +115,7 @@ export default function ArticleView({
           <ShareMenu article={article} />
           <button
             type="button"
-            className="icon-btn"
+            className="icon-btn hide-on-mobile"
             aria-label="הדפסה"
             onClick={() => window.print()}
           >

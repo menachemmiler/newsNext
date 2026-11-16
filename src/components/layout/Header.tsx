@@ -2,14 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import {
-  BookmarkIcon,
-  CloseIcon,
-  MenuIcon,
-  MoonIcon,
-  SunIcon,
-} from "@/components/icons";
+import { Suspense } from "react";
+import { BookmarkIcon, MoonIcon, SunIcon } from "@/components/icons";
 import CategoryNav from "@/components/layout/CategoryNav";
 import SearchBox from "@/components/news/SearchBox";
 import { COUNTRIES, SITE_NAME, SITE_TAGLINE } from "@/lib/constants";
@@ -26,11 +20,6 @@ export default function Header() {
   const country = useAppSelector((state) => state.news.country);
   const category = useAppSelector((state) => state.news.category);
   const savedCount = useAppSelector((state) => state.ui.bookmarks.length);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
 
   return (
     <header className="site-header">
@@ -72,28 +61,12 @@ export default function Header() {
             <BookmarkIcon />
             {savedCount > 0 && <span className="badge">{savedCount}</span>}
           </Link>
-          <button
-            type="button"
-            className="icon-btn menu-toggle"
-            aria-label="תפריט"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((value) => !value)}
-          >
-            {menuOpen ? <CloseIcon /> : <MenuIcon />}
-          </button>
         </div>
       </div>
-      <SearchBox className={menuOpen ? "is-open header-search" : "header-search"} />
-      {menuOpen && (
-        <div className="mobile-drawer">
-          <Suspense fallback={null}>
-            <CategoryNav
-              className="in-drawer"
-              onNavigate={() => setMenuOpen(false)}
-            />
-          </Suspense>
-        </div>
-      )}
+      <SearchBox className="header-search" />
+      <Suspense fallback={null}>
+        <CategoryNav />
+      </Suspense>
     </header>
   );
 }
