@@ -4,7 +4,7 @@ import Script from "next/script";
 import { Suspense } from "react";
 import AppShell from "@/components/layout/AppShell";
 import StoreProvider from "@/components/providers/StoreProvider";
-import { SITE_NAME, SITE_TAGLINE } from "@/lib/constants";
+import { getSiteUrl, SITE_NAME, SITE_TAGLINE } from "@/lib/constants";
 import "./globals.css";
 
 const heebo = Heebo({
@@ -18,6 +18,7 @@ const frank = Frank_Ruhl_Libre({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: `${SITE_NAME} | ${SITE_TAGLINE}`,
     template: `%s | ${SITE_NAME}`,

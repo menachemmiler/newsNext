@@ -26,5 +26,18 @@ export const COUNTRY_KEY = "now-country";
 export const SITE_NAME = "עכשיו";
 export const SITE_TAGLINE = "חדשות מהשטח, בזמן אמת";
 
+export const getSiteUrl = (): string => {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+  if (explicit) return explicit;
+
+  const host =
+    process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  if (host) {
+    return `https://${host.replace(/^https?:\/\//, "")}`;
+  }
+
+  return "http://localhost:3000";
+};
+
 export const GNEWS_PAGE_SIZE = 10;
 export const GNEWS_MAX_ARTICLES = 1000;
